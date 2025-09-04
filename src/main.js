@@ -1,16 +1,5 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { Water } from './objects/Water';
-import { Ground } from './objects/Ground';
-import { setupUI } from './ui';
-import { Boat } from './objects/Boat';
-import { Treasure } from './objects/Treasure';
-
-// Animation
-const clock = new THREE.Clock();
-let radius = 2;
-const boatScaleOffset = 0.03;
-
 
 // Scene setup
 const scene = new THREE.Scene();
@@ -20,95 +9,102 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
-const boat = new Boat({
-  radius,
-  boatScaleOffset,
+camera.position.set(2, 2, -6);
 
-});
-scene.add(boat);
-
-
-const treasure = new Treasure();
-scene.add(treasure);
-
-// Environment map
-const cubeTextureLoader = new THREE.CubeTextureLoader();
-cubeTextureLoader.setPath('/journey/');
-const environmentMap = cubeTextureLoader.load([
-  'px.png', // positive x
-  'nx.png', // negative x 
-  'py.png', // positive y
-  'ny.png', // negative y
-  'pz.png', // positive z
-  'nz.png'  // negative z
-]);
-
-const poolTexture = new THREE.TextureLoader().load('/journey/ocean_floor.png');
-
-scene.background = environmentMap;
-scene.environment = environmentMap;
-
-// Camera position
-camera.position.set(radius, radius, -radius*3);
-
-// Controls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-// Add some light to see the ground material
+// Lights
 const ambientLight = new THREE.AmbientLight(0xffffff, 3);
 scene.add(ambientLight);
-
-// Add some light to see the ground material
 const directionalLight = new THREE.DirectionalLight(0xffffff, 3);
 scene.add(directionalLight);
-
-const hemiLight = new THREE.HemisphereLight(0x87ceeb, 0x444444, 1.0); // sky color, ground color, intensity
-hemiLight.position.set(0, radius * 3, 0);
+const hemiLight = new THREE.HemisphereLight(0x87ceeb, 0x444444, 1.0);
+hemiLight.position.set(0, 6, 0);
 scene.add(hemiLight);
 
-const waterResolution = { size: 512 };
-const water = new Water({
-  environmentMap,
-  radius,
-  resolution: waterResolution.size,
-});
-scene.add(water);
+// Environment map setup
+const cubeTextureLoader = new THREE.CubeTextureLoader();
+cubeTextureLoader.setPath('/journey/');
+const environmentMap = cubeTextureLoader.load([
+  'px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'
+]);
+scene.background = environmentMap;
+scene.environment = environmentMap;
 
-const ground = new Ground({
-  texture: poolTexture,
-  radius
-});
-scene.add(ground);
+// Texture loader for pool texture
+const poolTexture = new THREE.TextureLoader().load('/journey/ocean_floor.png');
 
+const clock = new THREE.Clock();
+const radius = 2;
+const boatScaleOffset = 0.03;
+
+// Declare variables for dynamic objects
+let boat, treasure, water, ground;
+
+// Dynamic imports for heavy objects
+async function loadObjects() {
+  const [{ Boat }, { Treasure }, { Water }, { Ground }, { setupUI }] = await Promise.all([
+    import('./objects/Boat'),
+    import('./objects/Treasure'),
+    import('./objects/Water'),
+    import('./objects/Ground'),
+    import('./ui')
+  ]);
+
+  boat = new Boat({ radius, boatScaleOffset });
+  treasure = new Treasure();
+
+  scene.add(boat);
+  scene.add(treasure);
+
+  const waterResolution = { size: 512 };
+
+  water = new Water({
+    environmentMap,
+    radius,
+    resolution: waterResolution.size,
+  });
+  scene.add(water);
+
+  ground = new Ground({
+    texture: poolTexture,
+    radius,
+  });
+  scene.add(ground);
+
+  setupUI({ waterResolution, water, ground });
+
+  animate();
+}
 
 window.addEventListener('keydown', e => {
   e.preventDefault();
-  boat.keysPressed[e.key.toLowerCase()] = true;
+  if (boat) boat.keysPressed[e.key.toLowerCase()] = true;
 });
 
 window.addEventListener('keyup', e => {
-  boat.keysPressed[e.key.toLowerCase()] = false;
+  if (boat) boat.keysPressed[e.key.toLowerCase()] = false;
 });
 
 function animate() {
   const elapsedTime = clock.getElapsedTime();
 
-  water.update(elapsedTime);
-  ground.update(elapsedTime);
-  boat.update(elapsedTime, water, treasure);
+  if (water) water.update(elapsedTime);
+  if (ground) ground.update(elapsedTime);
+  if (boat && treasure) boat.update(elapsedTime, water, treasure);
   controls.update();
 
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
 }
 
-// Handle resize
+// Resize handler
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-animate();
-setupUI({ waterResolution, water, ground});
+// Start loading objects dynamically
+loadObjects();
