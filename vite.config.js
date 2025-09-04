@@ -1,9 +1,20 @@
+import { defineConfig } from 'vite';
 import glsl from 'vite-plugin-glsl';
 
-export default {
+export default defineConfig({
   base: '/journey/',
+  plugins: [glsl()],
   build: {
-    sourcemap: true
-  },
-  plugins: [glsl()]
-} 
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // More specific check for THREE.js from node_modules
+          if (id.includes('node_modules/three')) {
+            return 'three-vendor';
+          }
+        }
+      }
+    }
+  }
+});
