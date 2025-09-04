@@ -47,7 +47,7 @@ export class Water extends THREE.Mesh {
         // Optional colors for frag shader
         uOpacity: { value: 0.75 },
         uEnvironmentMap: { value: options.environmentMap },
-        uTroughColor: { value: new THREE.Color('rgba(73, 152, 195, 1)') },
+        uTroughColor: { value: new THREE.Color('rgba(79, 158, 200, 1)') },
         uSurfaceColor: { value: new THREE.Color('rgba(155, 216, 192, 1)') },
         uPeakColor: { value: new THREE.Color('rgba(217, 234, 239, 1)') },
         uWaveColor: { value: new THREE.Color('rgba(187, 216, 224, 1)') },
