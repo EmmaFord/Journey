@@ -1,0 +1,2 @@
+import{G as l,b as d,g as i}from"./three-vendor-BkoL2XzL.js";class n extends l{constructor(e={}){super(),this.options=e,this.model,new d().load("/journey//models/flag.glb",r=>{this.model=r.scene,this.model.scale.set(.1,.1,.1),this.model.traverse(t=>{if(t.isMesh){const s=t.material;Array.isArray(s)?s.forEach(a=>a.side=i):s.side=i}}),this.add(this.model)})}showFlag(e,o){this.model&&(this.visible=!0,this.model.visible=!0,this.position.copy(e),this.quaternion.copy(o))}}export{n as Treasure};
+//# sourceMappingURL=Treasure-BtjO1LQQ.js.map
