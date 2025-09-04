@@ -45,7 +45,7 @@ export class Water extends THREE.Mesh {
         uGroundAmplitude: { value: 0.15 },
 
         // Optional colors for frag shader
-        uOpacity: { value: 0.8 },
+        uOpacity: { value: 0.75 },
         uEnvironmentMap: { value: options.environmentMap },
         uTroughColor: { value: new THREE.Color('rgba(73, 152, 195, 1)') },
         uSurfaceColor: { value: new THREE.Color('rgba(155, 216, 192, 1)') },
@@ -55,13 +55,8 @@ export class Water extends THREE.Mesh {
         uPeakTransition: { value: 0.05 },
         uTroughThreshold: { value: -0.01 },
         uTroughTransition: { value: 0.15 },
-        uShallowStart: { value: 0.0 },
-        uShallowEnd: { value: 0.3 },
-        uTexelSize: { value: new THREE.Vector2(1, 1) }, 
         uFresnelScale: { value: 0.5},
         uFresnelPower: { value: 0.02 }
-        // uFresnelScale: { value: 0.0},
-        // uFresnelPower: { value: 0.0 }
       },
       transparent: true,
       depthTest: true,
