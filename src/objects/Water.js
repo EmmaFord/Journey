@@ -9,7 +9,7 @@ export class Water extends THREE.Mesh {
     this.maxRipples = 10;
     this.rippleData = [];
 
-    this.texture = new THREE.TextureLoader().load( "/journey/world-map.png" );
+    this.texture = new THREE.TextureLoader().load( import.meta.env.BASE_URL + "/world-map.png" );
     this.texture.wrapS = THREE.RepeatWrapping;
     this.texture.wrapT = THREE.RepeatWrapping;
     

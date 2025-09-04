@@ -9,7 +9,7 @@ export class Treasure extends THREE.Group {
     // Load boat model
     this.model;
     const gltfLoader = new GLTFLoader();
-    gltfLoader.load('/journey/models/flag.glb', (gltf) => {
+    gltfLoader.load(import.meta.env.BASE_URL + '/models/flag.glb', (gltf) => {
       this.model = gltf.scene;
       this.model.scale.set(0.1, 0.1, 0.1);
       this.model.traverse((child) => {

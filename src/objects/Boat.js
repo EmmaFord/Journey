@@ -11,7 +11,7 @@ export class Boat extends THREE.Group {
     // ✅ Load texture with default flipY=true (same as Map)
     const loader = new THREE.TextureLoader();
     loader.load(
-      '/journey/world-map.png',
+      import.meta.env.BASE_URL +'world-map.png',
       (texture) => {
         const image = texture.image;
         texture.flipY = false;
@@ -37,7 +37,7 @@ export class Boat extends THREE.Group {
     // Load boat model
     this.model;
     const gltfLoader = new GLTFLoader();
-    gltfLoader.load('/journey/models/boat.glb', (gltf) => {
+    gltfLoader.load(import.meta.env.BASE_URL + 'models/boat.glb', (gltf) => {
       this.model = gltf.scene;
       this.model.scale.set(0.0001, 0.0001, 0.0001);
       this.add(this.model);

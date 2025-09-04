@@ -25,7 +25,7 @@ scene.add(hemiLight);
 
 // Environment map setup
 const cubeTextureLoader = new THREE.CubeTextureLoader();
-cubeTextureLoader.setPath('/journey/');
+cubeTextureLoader.setPath(import.meta.env.BASE_URL);
 const environmentMap = cubeTextureLoader.load([
   'px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'
 ]);
@@ -33,7 +33,7 @@ scene.background = environmentMap;
 scene.environment = environmentMap;
 
 // Texture loader for pool texture
-const poolTexture = new THREE.TextureLoader().load('/journey/ocean_floor.png');
+const poolTexture = new THREE.TextureLoader().load(import.meta.env.BASE_URL+ '/ocean_floor.png');
 
 const clock = new THREE.Clock();
 const radius = 2;
