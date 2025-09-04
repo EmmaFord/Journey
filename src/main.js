@@ -2,12 +2,9 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { Water } from './objects/Water';
 import { Ground } from './objects/Ground';
-import { Map } from './objects/Map';
 import { setupUI } from './ui';
 import { Boat } from './objects/Boat';
-import { SkyGroup } from './objects/Sky';
 import { Treasure } from './objects/Treasure';
-
 
 // Animation
 const clock = new THREE.Clock();
@@ -30,8 +27,6 @@ const boat = new Boat({
 });
 scene.add(boat);
 
-const sky = new SkyGroup();
-//scene.add( sky );
 
 const treasure = new Treasure();
 scene.add(treasure);
@@ -80,18 +75,12 @@ const water = new Water({
 });
 scene.add(water);
 
-
 const ground = new Ground({
   texture: poolTexture,
   radius
 });
 scene.add(ground);
 
-const map = new Map({
-  texture: poolTexture,
-  radius
-});
-//scene.add(map);
 
 window.addEventListener('keydown', e => {
   e.preventDefault();
@@ -122,4 +111,4 @@ window.addEventListener('resize', () => {
 });
 
 animate();
-setupUI({ waterResolution, water, ground, sky});
+setupUI({ waterResolution, water, ground});

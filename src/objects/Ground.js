@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import landVertexShader from '../shaders/land.vert?raw';
 import landFragmentShader from '../shaders/land.frag?raw';
 
-
 export class Ground extends THREE.Mesh {
   constructor(options = {}) {
     super();

@@ -1,8 +1,8 @@
 import { Pane } from 'tweakpane';
 import * as THREE from 'three';
-import { SkyGroup } from './objects/Sky';
 
-export function setupUI({ waterResolution, water, ground, SkyGroup }) {
+
+export function setupUI({ waterResolution, water, ground }) {
   const pane = new Pane();
 
   // Water parameters folder
